@@ -1,10 +1,13 @@
 import business.entities.*;
+import presentation.dtos.VendaDTO;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 import java.util.stream.Collectors;
+
+import static business.services.VendaService.criarVenda;
 
 public class Main {
 
@@ -13,7 +16,7 @@ public class Main {
 		// SIMULANDO BANCO DE DADOS
 
 		List<ProdutoEntity> carrinho = new ArrayList<ProdutoEntity>();
-		List<VendaEntity> vendaEntities = new ArrayList<VendaEntity>();
+		List<VendaDTO> vendasDTOList = new ArrayList<VendaDTO>();
 
 		EmpresaEntity empresaEntity = new EmpresaEntity(2, "SafeWay Padaria", "30021423000159", 0.15, 0.0);
 		EmpresaEntity empresaEntity2 = new EmpresaEntity(1, "Level Varejo", "53239160000154", 0.05, 0.0);
@@ -46,11 +49,12 @@ public class Main {
 		List<EmpresaEntity> empresaEntities = Arrays.asList(empresaEntity, empresaEntity2, empresaEntity3);
 		List<ProdutoEntity> produtoEntities = Arrays.asList(produtoEntity, produtoEntity2, produtoEntity3, produtoEntity4, produtoEntity5, produtoEntity6, produtoEntity7,
 				produtoEntity8, produtoEntity9, produtoEntity10);
-		executar(usuarioEntities, clienteEntities, empresaEntities, produtoEntities, carrinho, vendaEntities);
+
+		executar(usuarioEntities, clienteEntities, empresaEntities, produtoEntities, carrinho, vendasDTOList);
 	}
 
 	public static void executar(List<UsuarioEntity> usuarioEntities, List<ClienteEntity> clienteEntities, List<EmpresaEntity> empresaEntities,
-								List<ProdutoEntity> produtoEntities, List<ProdutoEntity> carrinho, List<VendaEntity> vendaEntities) {
+								List<ProdutoEntity> produtoEntities, List<ProdutoEntity> carrinho, List<VendaDTO> vendasDTOList) {
 		Scanner sc = new Scanner(System.in);
 
 		System.out.println("Entre com seu usuário e senha:");
@@ -77,18 +81,18 @@ public class Main {
 						System.out.println();
 						System.out.println("************************************************************");
 						System.out.println("VENDAS EFETUADAS");
-						vendaEntities.stream().forEach(vendaEntity -> {
-							if (vendaEntity.getEmpresa().getId().equals(usuarioEntityLogado.getEmpresa().getId())) {
+						vendasDTOList.stream().forEach(vendaDTO -> {
+							if (vendaDTO.getEmpresaEntity().getId().equals(usuarioEntityLogado.getEmpresa().getId())) {
 								System.out.println("************************************************************");
-								System.out.println("business.Venda de código: " + vendaEntity.getCódigo() + " no CPF "
-										+ vendaEntity.getCliente().getCpf() + ": ");
-								vendaEntity.getItens().stream().forEach(x -> {
+								System.out.println("business.Venda de código: " + vendaDTO.getCódigo() + " no CPF "
+										+ vendaDTO.getClienteEntity().getCpf() + ": ");
+								vendaDTO.getItens().stream().forEach(x -> {
 									System.out.println(x.getId() + " - " + x.getNome() + "    R$" + x.getPreco());
 								});
-								System.out.println("Total business.Venda: R$" + vendaEntity.getValor());
-								System.out.println("Total Taxa a ser paga: R$" + vendaEntity.getComissaoSistema());
+								System.out.println("Total business.Venda: R$" + vendaDTO.getValor());
+								System.out.println("Total Taxa a ser paga: R$" + vendaDTO.getComissaoSistema());
 								System.out.println("Total Líquido  para empresa"
-										+ (vendaEntity.getValor() - vendaEntity.getComissaoSistema()));
+										+ (vendaDTO.getValor() - vendaDTO.getComissaoSistema()));
 								System.out.println("************************************************************");
 							}
 
@@ -96,7 +100,7 @@ public class Main {
 						System.out.println("Saldo domain.Empresa: " + usuarioEntityLogado.getEmpresa().getSaldo());
 						System.out.println("************************************************************");
 
-						executar(usuarioEntities, clienteEntities, empresaEntities, produtoEntities, carrinho, vendaEntities);
+						executar(usuarioEntities, clienteEntities, empresaEntities, produtoEntities, carrinho, vendasDTOList);
 					}
 					case 2: {
 						System.out.println();
@@ -116,10 +120,10 @@ public class Main {
 						System.out.println("Saldo domain.Empresa: " + usuarioEntityLogado.getEmpresa().getSaldo());
 						System.out.println("************************************************************");
 
-						executar(usuarioEntities, clienteEntities, empresaEntities, produtoEntities, carrinho, vendaEntities);
+						executar(usuarioEntities, clienteEntities, empresaEntities, produtoEntities, carrinho, vendasDTOList);
 					}
 					case 0: {
-						executar(usuarioEntities, clienteEntities, empresaEntities, produtoEntities, carrinho, vendaEntities);
+						executar(usuarioEntities, clienteEntities, empresaEntities, produtoEntities, carrinho, vendasDTOList);
 
 					}
 					}
@@ -163,34 +167,34 @@ public class Main {
 						ClienteEntity clienteEntityLogado = clienteEntities.stream()
 								.filter(x -> x.getUsername().equals(usuarioEntityLogado.getUsername()))
 								.collect(Collectors.toList()).get(0);
-						VendaEntity vendaEntity = criarVenda(carrinho, empresaEntityEscolhida, clienteEntityLogado, vendaEntities);
-						System.out.println("Total: R$" + vendaEntity.getValor());
+						VendaDTO vendaDTO = criarVenda(carrinho, empresaEntityEscolhida, clienteEntityLogado, vendasDTOList);
+						System.out.println("Total: R$" + vendaDTO.getValor());
 						System.out.println("************************************************************");
 						carrinho.clear();
-						executar(usuarioEntities, clienteEntities, empresaEntities, produtoEntities, carrinho, vendaEntities);
+						executar(usuarioEntities, clienteEntities, empresaEntities, produtoEntities, carrinho, vendasDTOList);
 					}
 					case 2: {
 						System.out.println();
 						System.out.println("************************************************************");
 						System.out.println("COMPRAS EFETUADAS");
-						vendaEntities.stream().forEach(vendaEntity -> {
-							if (vendaEntity.getCliente().getUsername().equals(usuarioEntityLogado.getUsername())) {
+						vendasDTOList.stream().forEach(vendaDTO -> {
+							if (vendaDTO.getClienteEntity().getUsername().equals(usuarioEntityLogado.getUsername())) {
 								System.out.println("************************************************************");
-								System.out.println("Compra de código: " + vendaEntity.getCódigo() + " na empresa "
-										+ vendaEntity.getEmpresa().getNome() + ": ");
-								vendaEntity.getItens().stream().forEach(x -> {
+								System.out.println("Compra de código: " + vendaDTO.getCódigo() + " na empresa "
+										+ vendaDTO.getEmpresaEntity().getNome() + ": ");
+								vendaDTO.getItens().stream().forEach(x -> {
 									System.out.println(x.getId() + " - " + x.getNome() + "    R$" + x.getPreco());
 								});
-								System.out.println("Total: R$" + vendaEntity.getValor());
+								System.out.println("Total: R$" + vendaDTO.getValor());
 								System.out.println("************************************************************");
 							}
 
 						});
 
-						executar(usuarioEntities, clienteEntities, empresaEntities, produtoEntities, carrinho, vendaEntities);
+						executar(usuarioEntities, clienteEntities, empresaEntities, produtoEntities, carrinho, vendasDTOList);
 					}
 					case 0: {
-						executar(usuarioEntities, clienteEntities, empresaEntities, produtoEntities, carrinho, vendaEntities);
+						executar(usuarioEntities, clienteEntities, empresaEntities, produtoEntities, carrinho, vendasDTOList);
 
 					}
 
@@ -204,13 +208,5 @@ public class Main {
 		}
 	}
 
-	public static VendaEntity criarVenda(List<ProdutoEntity> carrinho, EmpresaEntity empresaEntity, ClienteEntity clienteEntity, List<VendaEntity> vendaEntities) {
-		Double total = carrinho.stream().mapToDouble(ProdutoEntity::getPreco).sum();
-		Double comissaoSistema = total * empresaEntity.getTaxa();
-		int idVenda = vendaEntities.isEmpty() ? 1 : vendaEntities.get(vendaEntities.size() - 1).getCódigo() + 1;
-		VendaEntity vendaEntity = new VendaEntity(idVenda, carrinho.stream().toList(), total, comissaoSistema, empresaEntity, clienteEntity);
-		empresaEntity.setSaldo(empresaEntity.getSaldo() + total);
-		vendaEntities.add(vendaEntity);
-		return vendaEntity;
-	}
+
 }
