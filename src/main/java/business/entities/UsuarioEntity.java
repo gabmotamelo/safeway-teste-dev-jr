@@ -1,25 +1,27 @@
 package business.entities;
 
+import presentation.dtos.ClienteDTO;
+
 public class UsuarioEntity {
 	private String username;
 	private String senha;
-	private ClienteEntity clienteEntity;
+	private ClienteDTO clienteDTO;
 	private EmpresaEntity empresaEntity;
 
 	public UsuarioEntity() {
 		super();
 	}
 
-	public UsuarioEntity(String username, String senha, ClienteEntity clienteEntity, EmpresaEntity empresaEntity) {
+	public UsuarioEntity(String username, String senha, ClienteDTO clienteDTO, EmpresaEntity empresaEntity) {
 		super();
 		this.username = username;
 		this.senha = senha;
-		this.clienteEntity = clienteEntity;
+		this.clienteDTO = clienteDTO;
 		this.empresaEntity = empresaEntity;
 	}
 
 	public boolean IsAdmin() {
-		return this.empresaEntity == null && this.clienteEntity == null;
+		return this.empresaEntity == null && this.clienteDTO == null;
 	}
 
 	public boolean IsEmpresa() {
@@ -27,7 +29,7 @@ public class UsuarioEntity {
 	}
 
 	public boolean IsCliente() {
-		return this.clienteEntity != null;
+		return this.clienteDTO != null;
 	}
 
 	public String getUsername() {
@@ -46,12 +48,12 @@ public class UsuarioEntity {
 		this.senha = senha;
 	}
 
-	public ClienteEntity getCliente() {
-		return clienteEntity;
+	public ClienteDTO getCliente() {
+		return clienteDTO;
 	}
 
-	public void setCliente(ClienteEntity clienteEntity) {
-		this.clienteEntity = clienteEntity;
+	public void setCliente(ClienteDTO clienteDTO) {
+		this.clienteDTO = clienteDTO;
 	}
 
 	public EmpresaEntity getEmpresa() {
