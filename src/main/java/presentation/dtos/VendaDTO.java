@@ -2,20 +2,19 @@ package presentation.dtos;
 
 import business.entities.ClienteEntity;
 import business.entities.EmpresaEntity;
-import business.entities.ProdutoEntity;
 
 import java.util.List;
 
 public class VendaDTO {
 
     private Integer código;
-    private List<ProdutoEntity> itens;
+    private List<ProdutoDTO> itens;
     private Double valor;
     private Double comissaoSistema;
     private EmpresaEntity empresaEntity;
     private ClienteEntity clienteEntity;
 
-    public VendaDTO(Integer código, List<ProdutoEntity> itens, Double valor, Double comissaoSistema, EmpresaEntity empresaEntity, ClienteEntity clienteEntity) {
+    public VendaDTO(Integer código, List<ProdutoDTO> itens, Double valor, Double comissaoSistema, EmpresaEntity empresaEntity, ClienteEntity clienteEntity) {
         this.código = código;
         this.itens = itens;
         this.valor = valor;
@@ -32,11 +31,11 @@ public class VendaDTO {
         this.código = código;
     }
 
-    public List<ProdutoEntity> getItens() {
+    public List<ProdutoDTO> getItens() {
         return itens;
     }
 
-    public void setItens(List<ProdutoEntity> itens) {
+    public void setItens(List<ProdutoDTO> itens) {
         this.itens = itens;
     }
 
