@@ -11,7 +11,7 @@ import java.util.stream.Collectors;
 
 import static business.services.VendaService.criarVenda;
 
-public class Main {
+public class MainApplication {
 
 	public static void main(String[] args) {
 
