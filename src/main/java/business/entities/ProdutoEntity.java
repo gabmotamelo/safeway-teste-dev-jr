@@ -1,5 +1,7 @@
 package business.entities;
 
+import presentation.dtos.ProdutoDTO;
+
 public class ProdutoEntity {
 	private Integer id;
 	private String nome;
@@ -20,8 +22,8 @@ public class ProdutoEntity {
 		super();
 		// TODO Auto-generated constructor stub
 	}
-	
-	
+
+
 
 	public Integer getId() {
 		return id;
