@@ -1,0 +1,48 @@
+package presentation.dtos;
+
+public class ClienteDTO {
+
+    private String cpf;
+    private String nome;
+    private String username;
+    private Integer idade;
+
+    public ClienteDTO(String cpf, String nome, String username, Integer idade) {
+        this.cpf = cpf;
+        this.nome = nome;
+        this.username = username;
+        this.idade = idade;
+    }
+
+    public String getCpf() {
+        return cpf;
+    }
+
+    public void setCpf(String cpf) {
+        this.cpf = cpf;
+    }
+
+    public String getNome() {
+        return nome;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public Integer getIdade() {
+        return idade;
+    }
+
+    public void setIdade(Integer idade) {
+        this.idade = idade;
+    }
+}

@@ -1,4 +1,5 @@
 import business.entities.*;
+import presentation.dtos.ClienteDTO;
 import presentation.dtos.ProdutoDTO;
 import presentation.dtos.VendaDTO;
 
@@ -34,27 +35,27 @@ public class Main {
 		ProdutoDTO produtoDTO9 = new ProdutoDTO(9, "Croissant", 7, 6.50, empresaEntity);
 		ProdutoDTO produtoDTO10 = new ProdutoDTO(10, "Ché Gelado", 4, 5.50, empresaEntity);
 
-		ClienteEntity clienteEntity = new ClienteEntity("07221134049", "Allan da Silva", "cliente", 20);
-		ClienteEntity clienteEntity2 = new ClienteEntity("72840700050", "Samuel da Silva", "cliente2", 24);
+		ClienteDTO clienteDTO = new ClienteDTO("07221134049", "Allan da Silva", "cliente", 20);
+		ClienteDTO clienteDTO2 = new ClienteDTO("72840700050", "Samuel da Silva", "cliente2", 24);
 
 		UsuarioEntity usuarioEntity1 = new UsuarioEntity("admin", "1234", null, null);
 		UsuarioEntity usuarioEntity2 = new UsuarioEntity("empresa", "1234", null, empresaEntity);
-		UsuarioEntity usuarioEntity3 = new UsuarioEntity("cliente", "1234", clienteEntity, null);
-		UsuarioEntity usuarioEntity4 = new UsuarioEntity("cliente2", "1234", clienteEntity2, null);
+		UsuarioEntity usuarioEntity3 = new UsuarioEntity("cliente", "1234", clienteDTO, null);
+		UsuarioEntity usuarioEntity4 = new UsuarioEntity("cliente2", "1234", clienteDTO2, null);
 		UsuarioEntity usuarioEntity5 = new UsuarioEntity("empresa2", "1234", null, empresaEntity2);
 		UsuarioEntity usuarioEntity6 = new UsuarioEntity("empresa3", "1234", null, empresaEntity3);
 
 
 		List<UsuarioEntity> usuarioEntities = Arrays.asList(usuarioEntity1, usuarioEntity2, usuarioEntity3, usuarioEntity4, usuarioEntity5, usuarioEntity6);
-		List<ClienteEntity> clienteEntities = Arrays.asList(clienteEntity, clienteEntity2);
+		List<ClienteDTO> clientesDTOList = Arrays.asList(clienteDTO, clienteDTO2);
 		List<EmpresaEntity> empresaEntities = Arrays.asList(empresaEntity, empresaEntity2, empresaEntity3);
 		List<ProdutoDTO> produtoDTOList = Arrays.asList(produtoDTO, produtoDTO2, produtoDTO3, produtoDTO4, produtoDTO5, produtoDTO6, produtoDTO7,
 				produtoDTO8, produtoDTO9, produtoDTO10);
 
-		executar(usuarioEntities, clienteEntities, empresaEntities, produtoDTOList, carrinho, vendasDTOList);
+		executar(usuarioEntities, clientesDTOList, empresaEntities, produtoDTOList, carrinho, vendasDTOList);
 	}
 
-	public static void executar(List<UsuarioEntity> usuarioEntities, List<ClienteEntity> clienteEntities, List<EmpresaEntity> empresaEntities,
+	public static void executar(List<UsuarioEntity> usuarioEntities, List<ClienteDTO> clientesDTOList, List<EmpresaEntity> empresaEntities,
 								List<ProdutoDTO> produtosDTOList, List<ProdutoDTO> carrinho, List<VendaDTO> vendasDTOList) {
 		Scanner sc = new Scanner(System.in);
 
@@ -86,7 +87,7 @@ public class Main {
 							if (vendaDTO.getEmpresaEntity().getId().equals(usuarioEntityLogado.getEmpresa().getId())) {
 								System.out.println("************************************************************");
 								System.out.println("business.Venda de código: " + vendaDTO.getCódigo() + " no CPF "
-										+ vendaDTO.getClienteEntity().getCpf() + ": ");
+										+ vendaDTO.getClienteDTO().getCpf() + ": ");
 								vendaDTO.getItens().stream().forEach(x -> {
 									System.out.println(x.getId() + " - " + x.getNome() + "    R$" + x.getPreco());
 								});
@@ -101,7 +102,7 @@ public class Main {
 						System.out.println("Saldo domain.Empresa: " + usuarioEntityLogado.getEmpresa().getSaldo());
 						System.out.println("************************************************************");
 
-						executar(usuarioEntities, clienteEntities, empresaEntities, produtosDTOList, carrinho, vendasDTOList);
+						executar(usuarioEntities, clientesDTOList, empresaEntities, produtosDTOList, carrinho, vendasDTOList);
 					}
 					case 2: {
 						System.out.println();
@@ -121,10 +122,10 @@ public class Main {
 						System.out.println("Saldo domain.Empresa: " + usuarioEntityLogado.getEmpresa().getSaldo());
 						System.out.println("************************************************************");
 
-						executar(usuarioEntities, clienteEntities, empresaEntities, produtosDTOList, carrinho, vendasDTOList);
+						executar(usuarioEntities, clientesDTOList, empresaEntities, produtosDTOList, carrinho, vendasDTOList);
 					}
 					case 0: {
-						executar(usuarioEntities, clienteEntities, empresaEntities, produtosDTOList, carrinho, vendasDTOList);
+						executar(usuarioEntities, clientesDTOList, empresaEntities, produtosDTOList, carrinho, vendasDTOList);
 
 					}
 					}
@@ -165,21 +166,21 @@ public class Main {
 						});
 						EmpresaEntity empresaEntityEscolhida = empresaEntities.stream().filter(x -> x.getId().equals(escolhaEmpresa))
 								.collect(Collectors.toList()).get(0);
-						ClienteEntity clienteEntityLogado = clienteEntities.stream()
+						ClienteDTO clienteDTOLogado = clientesDTOList.stream()
 								.filter(x -> x.getUsername().equals(usuarioEntityLogado.getUsername()))
 								.collect(Collectors.toList()).get(0);
-						VendaDTO vendaDTO = criarVenda(carrinho, empresaEntityEscolhida, clienteEntityLogado, vendasDTOList);
+						VendaDTO vendaDTO = criarVenda(carrinho, empresaEntityEscolhida, clienteDTOLogado, vendasDTOList);
 						System.out.println("Total: R$" + vendaDTO.getValor());
 						System.out.println("************************************************************");
 						carrinho.clear();
-						executar(usuarioEntities, clienteEntities, empresaEntities, produtosDTOList, carrinho, vendasDTOList);
+						executar(usuarioEntities, clientesDTOList, empresaEntities, produtosDTOList, carrinho, vendasDTOList);
 					}
 					case 2: {
 						System.out.println();
 						System.out.println("************************************************************");
 						System.out.println("COMPRAS EFETUADAS");
 						vendasDTOList.stream().forEach(vendaDTO -> {
-							if (vendaDTO.getClienteEntity().getUsername().equals(usuarioEntityLogado.getUsername())) {
+							if (vendaDTO.getClienteDTO().getUsername().equals(usuarioEntityLogado.getUsername())) {
 								System.out.println("************************************************************");
 								System.out.println("Compra de código: " + vendaDTO.getCódigo() + " na empresa "
 										+ vendaDTO.getEmpresaEntity().getNome() + ": ");
@@ -192,10 +193,10 @@ public class Main {
 
 						});
 
-						executar(usuarioEntities, clienteEntities, empresaEntities, produtosDTOList, carrinho, vendasDTOList);
+						executar(usuarioEntities, clientesDTOList, empresaEntities, produtosDTOList, carrinho, vendasDTOList);
 					}
 					case 0: {
-						executar(usuarioEntities, clienteEntities, empresaEntities, produtosDTOList, carrinho, vendasDTOList);
+						executar(usuarioEntities, clientesDTOList, empresaEntities, produtosDTOList, carrinho, vendasDTOList);
 
 					}
 

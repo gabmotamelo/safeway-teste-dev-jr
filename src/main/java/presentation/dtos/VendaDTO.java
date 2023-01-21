@@ -12,15 +12,15 @@ public class VendaDTO {
     private Double valor;
     private Double comissaoSistema;
     private EmpresaEntity empresaEntity;
-    private ClienteEntity clienteEntity;
+    private ClienteDTO clienteDTO;
 
-    public VendaDTO(Integer código, List<ProdutoDTO> itens, Double valor, Double comissaoSistema, EmpresaEntity empresaEntity, ClienteEntity clienteEntity) {
+    public VendaDTO(Integer código, List<ProdutoDTO> itens, Double valor, Double comissaoSistema, EmpresaEntity empresaEntity, ClienteDTO clienteDTO) {
         this.código = código;
         this.itens = itens;
         this.valor = valor;
         this.comissaoSistema = comissaoSistema;
         this.empresaEntity = empresaEntity;
-        this.clienteEntity = clienteEntity;
+        this.clienteDTO = clienteDTO;
     }
 
     public Integer getCódigo() {
@@ -63,11 +63,11 @@ public class VendaDTO {
         this.empresaEntity = empresaEntity;
     }
 
-    public ClienteEntity getClienteEntity() {
-        return clienteEntity;
+    public ClienteDTO getClienteDTO() {
+        return clienteDTO;
     }
 
-    public void setClienteEntity(ClienteEntity clienteEntity) {
-        this.clienteEntity = clienteEntity;
+    public void setClienteDTO(ClienteDTO clienteDTO) {
+        this.clienteDTO = clienteDTO;
     }
 }
